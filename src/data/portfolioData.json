@@ -1,0 +1,34 @@
+[
+  {
+    "id": "about",
+    "title": "About Me.txt",
+    "icon": "📄",
+    "type": "about",
+    "heading": "Hello World! I'm a Full Stack Developer.",
+    "body": "Welcome to my retro portfolio website built with Expo and React Native Web. I specialize in building immersive web and mobile applications with vintage or modern design flair."
+  },
+  {
+    "id": "projects",
+    "title": "My Projects",
+    "icon": "📁",
+    "type": "projects",
+    "heading": "Featured Projects:",
+    "body": "• Win95 Web Portfolio (Expo/React Native)\n• Cyberpunk E-Commerce App (React Native)\n• Retro Terminal Blog Engine (Node.js)"
+  },
+  {
+    "id": "skills",
+    "title": "Skills.exe",
+    "icon": "⚙️",
+    "type": "skills",
+    "heading": "System Diagnostics - Skills:",
+    "body": "[██████████] JavaScript / TypeScript (99%)\n[█████████-] React / React Native / Expo (90%)\n[████████--] Node.js & Databases (80%)"
+  },
+  {
+    "id": "contact",
+    "title": "Contact.eml",
+    "icon": "✉️",
+    "type": "contact",
+    "heading": "Send a Transmission:",
+    "body": "Email: developer@retro-os.dev\nGitHub: github.com/your-username\nLocation: Sector 7G, Earth"
+  }
+]
