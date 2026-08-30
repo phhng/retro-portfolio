@@ -1,10 +1,10 @@
 // components/Desktop.tsx
-import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Window from "./Window";
-import Taskbar from "./Taskbar";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import portfolioData from "../data/portfolioData.json";
+import Taskbar from "./Taskbar";
+import Window from "./Window";
 
 interface DesktopItem {
   id: string;
@@ -21,7 +21,9 @@ interface WindowState {
   width: number;
   height: number;
   isMaximized: boolean;
+  isMinimized: boolean;
   preMaximize?: { x: number; y: number; width: number; height: number };
+  preMinimize?: { x: number; y: number; width: number; height: number };
 }
 
 export default function Desktop() {
@@ -48,7 +50,6 @@ export default function Desktop() {
       focusWindow(item.id);
       return;
     }
-
     const index = openWindows.length;
 
     setOpenWindows((prev) => [...prev, item]);
@@ -61,6 +62,7 @@ export default function Desktop() {
         width: 340,
         height: 260,
         isMaximized: false,
+        isMinimized: false,
       },
     }));
 
@@ -71,8 +73,63 @@ export default function Desktop() {
   };
 
   const focusWindow = (id: string) => {
+    const state = windowStates[id];
+
+    if (state?.isMinimized) {
+      setWindowStates((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          isMinimized: false,
+        },
+      }));
+
+      setActiveWindowId(id);
+      return;
+    }
+
     setActiveWindowId(id);
-    setHighestZIndex((prev) => prev + 1);
+    setHighestZIndex((prevZ) => {
+      const newZ = prevZ + 1;
+      setWindowStates((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          zIndex: newZ,
+        },
+      }));
+
+      return newZ;
+    });
+  };
+
+  const focusTaskbar = (id: string) => {
+    const state = windowStates[id];
+
+    if (activeWindowId === id && !state?.isMinimized) {
+      setWindowStates((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          isMinimized: true,
+        },
+      }));
+      return;
+    }
+    
+    else if (state?.isMinimized) {
+      focusWindow(id);
+    }
+  };
+
+  const toggleMinimize = (id: string) => {
+    setWindowStates((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        isMinimized: !prev[id]?.isMinimized,
+      },
+    }));
   };
 
   // Window Manager Handlers passed down to Window components
@@ -103,13 +160,14 @@ export default function Desktop() {
 
   return (
     <View style={[styles.desktop, { backgroundColor: theme.desktopBg }]}>
-      {/* Desktop Grid Icons */}
       <View style={styles.grid}>
         {desktopItems.map((item, index) => (
           <TouchableOpacity
             key={item.id}
             style={[styles.desktopIcon, { top: 20 + index * 80 }]}
-            onPress={() => openWindow(item)}
+            onPress={() => {
+              openWindow(item);
+            }}
           >
             <Text style={styles.iconSymbol}>{item.icon}</Text>
             <Text style={[styles.iconText, { color: theme.iconText }]}>
@@ -127,6 +185,7 @@ export default function Desktop() {
           width: 400,
           height: 560,
           isMaximized: false,
+          isMinimized: false,
         };
         return (
           <Window
@@ -140,8 +199,9 @@ export default function Desktop() {
             zIndex={activeWindowId === win.id ? highestZIndex : 1}
             onFocus={() => focusWindow(win.id)}
             onClose={() => closeWindow(win.id)}
-            onMinimize={() => closeWindow(win.id)}
             onChangeState={(newState) => updateWindowState(win.id, newState)}
+            isMinimized={windowStates[win.id]?.isMinimized ?? false}
+            onMinimize={() => toggleMinimize(win.id)}
           >
             {renderWindowContent(win)}
           </Window>
@@ -152,7 +212,7 @@ export default function Desktop() {
       <Taskbar
         openWindows={openWindows}
         activeWindowId={activeWindowId}
-        onToggleWindow={(id) => focusWindow(id)}
+        onToggleWindow={(id) => focusTaskbar(id)}
       />
     </View>
   );

@@ -16,6 +16,7 @@ interface WindowProps {
   width: number;
   height: number;
   isMaximized: boolean;
+  isMinimized: boolean;
   zIndex: number;
   onClose: () => void;
   onMinimize: () => void;
@@ -26,6 +27,7 @@ interface WindowProps {
     width?: number;
     height?: number;
     isMaximized?: boolean;
+    isMinimized?: boolean;
   }) => void;
   children: React.ReactNode;
 }
@@ -47,6 +49,7 @@ export default function Window({
   width,
   height,
   isMaximized,
+  isMinimized,
   zIndex,
   onClose,
   onMinimize,
@@ -226,6 +229,11 @@ export default function Window({
       });
     }
   };
+
+  const toggleMinimize = () => {
+    onMinimize();
+  };
+
   const topResizeResponder = useRef(createResizeResponder("top")).current;
 
   const bottomResizeResponder = useRef(createResizeResponder("bottom")).current;
@@ -250,6 +258,9 @@ export default function Window({
     createResizeResponder("bottom-right"),
   ).current;
 
+  if (isMinimized) {
+    return null;
+  }
   return (
     <View
       onTouchStart={onFocus}
@@ -286,7 +297,7 @@ export default function Window({
                 borderBottomColor: theme.windowBorderDark,
               },
             ]}
-            onPress={onMinimize}
+            onPress={toggleMinimize}
           >
             <Text style={[styles.buttonSymbol, { color: theme.textMain }]}>
               _
