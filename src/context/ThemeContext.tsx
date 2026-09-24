@@ -1,6 +1,11 @@
 // context/ThemeContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-import { lightTheme, darkTheme, ThemeColors } from '@/constants/themes';
+
+import React, { createContext, useContext, useState } from "react";
+import { useColorScheme } from "react-native";
+
+import { lightTheme, darkTheme, ThemeColors } from "@/constants/themes";
+
+type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
   isDarkMode: boolean;
@@ -14,17 +19,31 @@ const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
 });
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const deviceTheme = localStorage.getItem('theme');
 
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
-  };
+  const [themeMode, setThemeMode] = useState<ThemeMode>(
+    deviceTheme === "dark" ? "dark" : "light"
+  );
+  const isDarkMode = themeMode === "dark";
 
   const theme = isDarkMode ? darkTheme : lightTheme;
 
+  const toggleTheme = () => {
+    setThemeMode((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+  localStorage.setItem('theme',themeMode)
+
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme, theme }}>
+    <ThemeContext.Provider
+      value={{
+        isDarkMode,
+        toggleTheme,
+        theme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
