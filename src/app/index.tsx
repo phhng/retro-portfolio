@@ -1,5 +1,5 @@
-import { StyleSheet, View } from 'react-native';
-import Desktop from '@/components/Desktop';
+import Desktop from "@/components/Desktop/Desktop";
+import { StyleSheet, View } from "react-native";
 
 export default function Index() {
   return (
@@ -12,7 +12,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 });

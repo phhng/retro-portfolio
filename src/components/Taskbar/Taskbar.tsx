@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useTheme } from "../context/ThemeContext";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 interface WindowItem {
   id: string;
@@ -12,12 +12,14 @@ interface TaskbarProps {
   openWindows: WindowItem[];
   activeWindowId: string | null;
   onToggleWindow: (id: string) => void;
+  onStartPress: () => void;
 }
 
 export default function Taskbar({
   openWindows,
   activeWindowId,
   onToggleWindow,
+  onStartPress,
 }: TaskbarProps) {
   const { theme, toggleTheme, isDarkMode } = useTheme();
   const [time, setTime] = useState("");
@@ -46,6 +48,7 @@ export default function Taskbar({
     >
       {/* Start Button */}
       <TouchableOpacity
+        onPress={onStartPress}
         style={[
           styles.startButton,
           {
@@ -60,9 +63,7 @@ export default function Taskbar({
           ❖ Start
         </Text>
       </TouchableOpacity>
-
       <View style={styles.divider} />
-
       {/* Tabs */}
       <View style={styles.windowTabs}>
         {openWindows.map((win) => {

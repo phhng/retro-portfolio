@@ -4,8 +4,8 @@
     "title": "About Me.txt",
     "icon": "📄",
     "type": "about",
-    "heading": "Hello World! I'm a Full Stack Developer.",
-    "body": "Welcome to my retro portfolio website built with Expo and React Native Web. I specialize in building immersive web and mobile applications with vintage or modern design flair."
+    "heading": "Retro style Portfolio",
+    "body": "This is a web portfolio with the Windows XP style, showcasing my works, skill and other works"
   },
   {
     "id": "projects",
@@ -17,7 +17,7 @@
   },
   {
     "id": "skills",
-    "title": "Skills.exe",
+    "title": "Skills.txt",
     "icon": "⚙️",
     "type": "skills",
     "heading": "System Diagnostics - Skills:",
@@ -28,7 +28,15 @@
     "title": "Contact.eml",
     "icon": "✉️",
     "type": "contact",
-    "heading": "Send a Transmission:",
-    "body": "Email: developer@retro-os.dev\nGitHub: github.com/your-username\nLocation: Sector 7G, Earth"
+    "heading": "Contact me via email:",
+    "body": "Email: hphuong11204@gmail.com\nGitHub: github.com/phhng\nLocation: 🇻🇳"
+  },
+  {
+    "id": "gallery",
+    "title": "Gallery",
+    "icon": "✉️",
+    "type": "Gallery",
+    "heading": "Featuring my creative works:",
+    "body": "[insert images here]"
   }
 ]
