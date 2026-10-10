@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { ImageBackground, Pressable, View } from "react-native";
+import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
+import { games } from "../../data/games";
 import portfolioData from "../../data/portfolioData.json";
 import { useWindowManager } from "../../hooks/useWindowManager";
 import StartMenu from "../StartMenu/StartMenu";
@@ -25,9 +27,25 @@ export default function Desktop() {
   } = useWindowManager(portfolioData);
 
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const { email } = useAuth();
 
-  return (
-    <View style={[styles.desktop, { backgroundColor: theme.desktopBg }]}>
+  const openGame = (game: (typeof games)[number]) => {
+    openWindow(game);
+    setIsStartMenuOpen(false);
+  };
+
+  const openAccount = () => {
+    openWindow({
+      id: "account",
+      title: "User Accounts",
+      icon: "👤",
+      type: "account",
+    });
+    setIsStartMenuOpen(false);
+  };
+
+  const desktopContents = (
+    <>
       <DesktopIcons items={portfolioData} onOpen={openWindow} />
 
       <DesktopWindows
@@ -40,7 +58,23 @@ export default function Desktop() {
         onChangeState={updateWindowState}
       />
 
-      {isStartMenuOpen && <StartMenu />}
+      {isStartMenuOpen && (
+        <Pressable
+          accessibilityLabel="Close Start Menu"
+          accessibilityRole="button"
+          onPress={() => setIsStartMenuOpen(false)}
+          style={styles.startMenuDismissLayer}
+        />
+      )}
+
+      {isStartMenuOpen && (
+        <StartMenu
+          email={email}
+          games={games}
+          onOpenGame={openGame}
+          onOpenAccount={openAccount}
+        />
+      )}
 
       <Taskbar
         openWindows={openWindows}
@@ -48,6 +82,25 @@ export default function Desktop() {
         onToggleWindow={focusTaskbar}
         onStartPress={() => setIsStartMenuOpen((prev) => !prev)}
       />
+    </>
+  );
+
+  if (theme.desktopBackgroundImage) {
+    return (
+      <ImageBackground
+        source={theme.desktopBackgroundImage}
+        resizeMode="cover"
+        style={[styles.desktop, { backgroundColor: theme.desktopBg}]}
+        imageStyle={{ alignSelf: "center"}}
+      >
+        {desktopContents}
+      </ImageBackground>
+    );
+  }
+
+  return (
+    <View style={[styles.desktop, { backgroundColor: theme.desktopBg }]}>
+      {desktopContents}
     </View>
   );
 }

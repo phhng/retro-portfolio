@@ -4,12 +4,27 @@ import { useTheme } from "@/context/ThemeContext";
 import { Text, View } from "react-native";
 import { DesktopItem } from "../../hooks/useWindowManager";
 import { styles } from "../Desktop/DesktopIcons.styles";
+import AccountWindow from "../Account/AccountWindow";
+import { games } from "../../data/games";
 
 interface WindowContentProps {
   item: DesktopItem;
 }
 export default function WindowContent({ item }: WindowContentProps) {
   const { theme } = useTheme();
+
+  if (item.type === "game") {
+    const game = games.find((registeredGame) => registeredGame.id === item.id);
+    if (game) {
+      const GameComponent = game.component;
+      return <GameComponent />;
+    }
+  }
+
+  if (item.type === "account") {
+    return <AccountWindow />;
+  }
+
   return (
     <View>
       {item.heading && (
@@ -28,46 +43,4 @@ export default function WindowContent({ item }: WindowContentProps) {
       ))}
     </View>
   );
-}
-
-{
-  /* 
-  export default function WindowContent({
-  item,
-}: WindowContentProps) {
-  switch (item.type) {
-    case "about":
-      return (
-        <View>
-          <Text>{item.heading}</Text>
-          <Text>{item.body}</Text>
-        </View>
-      );
-
-    case "projects":
-      return (
-        <View>
-          <Text>Projects</Text>
-          <Text>{item.body}</Text>
-        </View>
-      );
-
-    case "contact":
-      return (
-        <View>
-          <Text>Contact</Text>
-          <Text>{item.body}</Text>
-        </View>
-      );
-
-    default:
-      return (
-        <View>
-          <Text>{item.heading}</Text>
-          <Text>{item.body}</Text>
-        </View>
-      );
-  }
-}
-  */
 }

@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderWidth: 2,
     alignItems: "center",
+    borderRadius: 0,
   },
   startText: { fontWeight: "bold", fontSize: 12 },
   divider: {
@@ -176,6 +177,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
     width: 120,
     borderWidth: 2,
+    borderRadius: 0,
   },
   tabText: { fontSize: 11 },
   activeTabText: { fontWeight: "bold" },
@@ -184,6 +186,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     marginRight: 4,
     borderWidth: 1,
+    borderRadius: 0,
   },
   tray: { borderWidth: 1, paddingHorizontal: 8, paddingVertical: 4 },
   trayText: { fontSize: 11 },

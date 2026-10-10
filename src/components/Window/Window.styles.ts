@@ -45,6 +45,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 2,
     borderWidth: 1,
+    borderRadius: 0,
   },
 
   closeButton: {

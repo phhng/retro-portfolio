@@ -29,6 +29,8 @@ export type WindowStateUpdate = Partial<
 
 const WINDOW_WIDTH = 340;
 const WINDOW_HEIGHT = 260;
+const GAME_WINDOW_WIDTH = 440;
+const GAME_WINDOW_HEIGHT = 540;
 const WINDOW_OFFSET = 30;
 
 export function useWindowManager(items: DesktopItem[]) {
@@ -51,8 +53,11 @@ export function useWindowManager(items: DesktopItem[]) {
 
     const index = openWindows.length;
 
-    const centerX = (screenWidth - WINDOW_WIDTH) / 2;
-    const centerY = (screenHeight - WINDOW_HEIGHT) / 2;
+    const isGame = item.type === "game";
+    const width = Math.min(isGame ? GAME_WINDOW_WIDTH : WINDOW_WIDTH, screenWidth - 16);
+    const height = Math.min(isGame ? GAME_WINDOW_HEIGHT : WINDOW_HEIGHT, screenHeight - 54);
+    const centerX = Math.max(8, (screenWidth - width) / 2);
+    const centerY = Math.max(8, (screenHeight - height) / 2);
 
     const newZIndex = highestZIndex + 1;
     const existingState = windowStates[item.id];
@@ -70,8 +75,8 @@ export function useWindowManager(items: DesktopItem[]) {
         : {
             x: centerX + index * WINDOW_OFFSET,
             y: centerY + index * WINDOW_OFFSET,
-            width: WINDOW_WIDTH,
-            height: WINDOW_HEIGHT,
+            width,
+            height,
             zIndex: newZIndex,
             isMaximized: false,
             isMinimized: false,

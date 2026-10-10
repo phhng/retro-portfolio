@@ -1,6 +1,9 @@
+import type { ImageSourcePropType } from "react-native";
+
 // constants/theme.ts
 export interface ThemeColors {
   desktopBg: string;
+  desktopBackgroundImage: ImageSourcePropType | null;
   windowBg: string;
   titleBarActive: string;
   titleBarInactive: string;
@@ -14,10 +17,11 @@ export interface ThemeColors {
 }
 
 export const lightTheme: ThemeColors = {
-  desktopBg: '#008080',       // Classic Win95 Teal
-  windowBg: '#c0c0c0',        // Win95 Grey
-  titleBarActive: '#000080',  // Navy Blue
-  titleBarInactive: '#808080',// Gray
+  desktopBg: '#008080',       
+  desktopBackgroundImage: require("../../assets/2198150_9.jpg"),
+  windowBg: '#c0c0c0',
+  titleBarActive: '#000080',
+  titleBarInactive: '#808080',
   titleText: '#ffffff',
   windowBorderLight: '#dfdfdf',
   windowBorderDark: '#404040',
@@ -28,11 +32,12 @@ export const lightTheme: ThemeColors = {
 };
 
 export const darkTheme: ThemeColors = {
-  desktopBg: '#051c1c',       // Deep Dark Teal
-  windowBg: '#1e1e1e',        // Dark Charcoal
-  titleBarActive: '#2d2d2d',  // Dark Slate
+  desktopBg: '#051c1c',
+  desktopBackgroundImage: require("../../assets/2198150_9.jpg"),
+  windowBg: '#1e1e1e',
+  titleBarActive: '#2d2d2d',
   titleBarInactive: '#111111',
-  titleText: '#00ffcc',       // Terminal Cyan
+  titleText: '#00ffcc',
   windowBorderLight: '#444444',
   windowBorderDark: '#000000',
   taskbarBg: '#121212',

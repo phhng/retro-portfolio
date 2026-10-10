@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     width: 80,
     alignItems: "center",
     marginBottom: 20,
+    borderRadius: 0,
   },
 
   iconSymbol: {

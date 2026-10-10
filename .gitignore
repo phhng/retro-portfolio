@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+server/node_modules/
 
 # Expo
 .expo/
@@ -32,11 +33,18 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
 
 # typescript
 *.tsbuildinfo
 
-example
+
+/documentation.md
 
 # generated native folders
 /ios
