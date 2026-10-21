@@ -31,6 +31,7 @@ export default function StartMenu({
 
   return (
     <View
+      nativeID="start-menu"
       style={[
         styles.menu,
         {

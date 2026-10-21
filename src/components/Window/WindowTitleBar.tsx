@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import type { PointerEvent } from "react-native";
 
 import { styles } from "./Window.styles";
 
@@ -14,6 +15,9 @@ interface WindowTitleBarProps {
   textColor: string;
 
   dragHandlers: any;
+  pointerDragHandlers: {
+    onPointerDown: (event: PointerEvent) => void;
+  };
 
   onMinimize: () => void;
   onMaximize: () => void;
@@ -30,6 +34,7 @@ export default function WindowTitleBar({
   buttonBorderDark,
   textColor,
   dragHandlers,
+  pointerDragHandlers,
   onMinimize,
   onMaximize,
   onClose,
@@ -44,6 +49,7 @@ export default function WindowTitleBar({
   return (
     <View
       {...dragHandlers}
+      {...pointerDragHandlers}
       style={[
         styles.titleBar,
         { backgroundColor },

@@ -13,7 +13,7 @@
     "icon": "📁",
     "type": "projects",
     "heading": "Featured Projects:",
-    "body": "• Win95 Web Portfolio (Expo/React Native)\n• Cyberpunk E-Commerce App (React Native)\n• Retro Terminal Blog Engine (Node.js)"
+    "body": "• Win95 Web Portfolio (Expo/React Native)\n• Retro Terminal Blog Engine (Node.js)"
   },
   {
     "id": "skills",
@@ -28,13 +28,13 @@
     "title": "Contact.eml",
     "icon": "✉️",
     "type": "contact",
-    "heading": "Contact me via email:",
-    "body": "Email: hphuong11204@gmail.com\nGitHub: github.com/phhng\nLocation: 🇻🇳"
+    "heading": "Contact me at:",
+    "body": "• Email: hphuong11204@gmail.com\n• GitHub: github.com/phhng\n• Location: HCMC - 🇻🇳"
   },
   {
     "id": "gallery",
     "title": "Gallery",
-    "icon": "✉️",
+    "icon": "📁",
     "type": "Gallery",
     "heading": "Featuring my creative works:",
     "body": "[insert images here]"

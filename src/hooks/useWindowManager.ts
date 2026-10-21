@@ -8,6 +8,8 @@ export interface DesktopItem {
   type: string;
   heading?: string;
   body?: string;
+  imageUri?: string;
+  enable?: boolean;
 }
 
 export interface WindowState {
@@ -31,6 +33,8 @@ const WINDOW_WIDTH = 340;
 const WINDOW_HEIGHT = 260;
 const GAME_WINDOW_WIDTH = 440;
 const GAME_WINDOW_HEIGHT = 540;
+const IMAGE_WINDOW_WIDTH = 640;
+const IMAGE_WINDOW_HEIGHT = 500;
 const WINDOW_OFFSET = 30;
 
 export function useWindowManager(items: DesktopItem[]) {
@@ -54,8 +58,19 @@ export function useWindowManager(items: DesktopItem[]) {
     const index = openWindows.length;
 
     const isGame = item.type === "game";
-    const width = Math.min(isGame ? GAME_WINDOW_WIDTH : WINDOW_WIDTH, screenWidth - 16);
-    const height = Math.min(isGame ? GAME_WINDOW_HEIGHT : WINDOW_HEIGHT, screenHeight - 54);
+    const isImageViewer = item.type === "image-viewer";
+    const preferredWidth = isGame
+      ? GAME_WINDOW_WIDTH
+      : isImageViewer
+        ? IMAGE_WINDOW_WIDTH
+        : WINDOW_WIDTH;
+    const preferredHeight = isGame
+      ? GAME_WINDOW_HEIGHT
+      : isImageViewer
+        ? IMAGE_WINDOW_HEIGHT
+        : WINDOW_HEIGHT;
+    const width = Math.min(preferredWidth, screenWidth - 16);
+    const height = Math.min(preferredHeight, screenHeight - 54);
     const centerX = Math.max(8, (screenWidth - width) / 2);
     const centerY = Math.max(8, (screenHeight - height) / 2);
 

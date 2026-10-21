@@ -2,6 +2,8 @@ import { WindowStateUpdate } from "@/hooks/useWindowManager";
 
 export interface WindowProps {
   title: string;
+  allowTextSelection: boolean;
+  toolbarEnabled: boolean;
 
   x: number;
   y: number;

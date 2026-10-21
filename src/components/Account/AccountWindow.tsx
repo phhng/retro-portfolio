@@ -21,7 +21,7 @@ export default function AccountWindow() {
     setMessage("");
     try {
       await requestSignIn(normalizedEmail);
-      setMessage("Check your inbox for a one-time sign-in link.");
+      setMessage("Mock sign-in link logged to the API console.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Could not send the sign-in link.");
     } finally {
@@ -64,7 +64,7 @@ export default function AccountWindow() {
       ) : (
         <>
           <Text style={[styles.copy, { color: theme.textMuted }]}>
-            Enter your email and we’ll send a one-time link. You stay signed in on this device.
+            Enter your email to create a mock sign-in link in the API console.
           </Text>
           <TextInput
             value={address}

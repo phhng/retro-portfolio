@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { PanResponder } from "react-native";
+import { PanResponder, Platform, PointerEvent as NativePointerEvent } from "react-native";
 
 import {
   ResizeDirection,
@@ -70,6 +70,60 @@ export function useWindowInteraction({
     x: 0,
     y: 0,
   });
+
+  const pointerDragStartRef = useRef<{
+    pointerId: number;
+    pointerX: number;
+    pointerY: number;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (Platform.OS !== "web") return;
+
+    const onPointerMove = (event: globalThis.PointerEvent) => {
+      const start = pointerDragStartRef.current;
+      if (!start || event.pointerId !== start.pointerId) return;
+
+      onChangeStateRef.current({
+        x: start.x + event.pageX - start.pointerX,
+        y: start.y + event.pageY - start.pointerY,
+      });
+    };
+    const onPointerUp = (event: globalThis.PointerEvent) => {
+      if (pointerDragStartRef.current?.pointerId === event.pointerId) {
+        pointerDragStartRef.current = null;
+      }
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    };
+  }, []);
+
+  const onPointerDown = (event: NativePointerEvent) => {
+    const { pointerType, button, pointerId, pageX, pageY } = event.nativeEvent;
+    if (Platform.OS !== "web" || pointerType !== "mouse" || button !== 0) {
+      return;
+    }
+
+    event.preventDefault();
+    const geometry = geometryRef.current;
+    pointerDragStartRef.current = {
+      pointerId,
+      pointerX: pageX,
+      pointerY: pageY,
+      x: geometry.x,
+      y: geometry.y,
+    };
+    onFocusRef.current();
+  };
 
   const dragResponder = useRef(
     PanResponder.create({
@@ -213,6 +267,7 @@ export function useWindowInteraction({
 
   return {
     dragResponder,
+    pointerDragHandlers: { onPointerDown },
     resizeResponders,
     toggleMaximize,
   };

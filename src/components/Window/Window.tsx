@@ -13,6 +13,8 @@ import WindowToolbar from "./WindowToolbar";
 
 export default function Window({
   title,
+  toolbarEnabled,
+  allowTextSelection,
   x,
   y,
   width,
@@ -29,7 +31,12 @@ export default function Window({
 }: WindowProps) {
   const { theme, isDarkMode } = useTheme();
 
-  const { dragResponder, resizeResponders, toggleMaximize } =
+  const {
+    dragResponder,
+    pointerDragHandlers,
+    resizeResponders,
+    toggleMaximize,
+  } =
     useWindowInteraction({
       x,
       y,
@@ -81,15 +88,18 @@ export default function Window({
         buttonBorderDark={theme.windowBorderDark}
         textColor={theme.textMain}
         dragHandlers={dragResponder.panHandlers}
+        pointerDragHandlers={pointerDragHandlers}
         onMinimize={onMinimize}
         onMaximize={toggleMaximize}
         onClose={onClose}
       />
 
-      <WindowToolbar
-        textColor={theme.textMain}
-        borderColor={theme.windowBorderDark}
-      />
+      {toolbarEnabled && (
+        <WindowToolbar
+          textColor={theme.textMain}
+          borderColor={theme.windowBorderDark}
+        />
+      )}
 
       <View
         style={[
@@ -99,6 +109,9 @@ export default function Window({
             borderColor: theme.windowBorderDark,
             borderTopColor: theme.windowBorderLight,
             borderLeftColor: theme.windowBorderLight,
+            // Web only
+            // @ts-ignore
+            userSelect: allowTextSelection ? "text" : "none",
           },
         ]}
       >

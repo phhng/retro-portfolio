@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { ImageBackground, Pressable, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ImageBackground, Platform, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { games } from "../../data/games";
+import type { GalleryImage } from "../../data/portfolio";
+import { getGalleryImageUri } from "../../data/portfolio";
 import portfolioData from "../../data/portfolioData.json";
 import { useWindowManager } from "../../hooks/useWindowManager";
 import StartMenu from "../StartMenu/StartMenu";
@@ -29,6 +31,27 @@ export default function Desktop() {
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const { email } = useAuth();
 
+  useEffect(() => {
+    if (!isStartMenuOpen || Platform.OS !== "web") return;
+
+    const closeMenuOnOutsideInteraction = (event: Event) => {
+      const menu = document.getElementById("start-menu");
+      if (!(event.target instanceof Element) || !menu) return;
+      if (
+        menu.contains(event.target) ||
+        event.target.closest('[data-testid="start-button"]')
+      ) return;
+      setIsStartMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", closeMenuOnOutsideInteraction);
+    document.addEventListener("focusin", closeMenuOnOutsideInteraction);
+    return () => {
+      document.removeEventListener("pointerdown", closeMenuOnOutsideInteraction);
+      document.removeEventListener("focusin", closeMenuOnOutsideInteraction);
+    };
+  }, [isStartMenuOpen]);
+
   const openGame = (game: (typeof games)[number]) => {
     openWindow(game);
     setIsStartMenuOpen(false);
@@ -44,28 +67,39 @@ export default function Desktop() {
     setIsStartMenuOpen(false);
   };
 
+  const openGalleryImage = (image: GalleryImage) => {
+    openWindow({
+      id: `gallery-image-${image.id}`,
+      title: image.title,
+      icon: "🖼️",
+      type: "image-viewer",
+      imageUri: getGalleryImageUri(image),
+    });
+  };
+
   const desktopContents = (
     <>
-      <DesktopIcons items={portfolioData} onOpen={openWindow} />
+      <View
+        onTouchStart={
+          Platform.OS === "web" || !isStartMenuOpen
+            ? undefined
+            : () => setIsStartMenuOpen(false)
+        }
+        style={styles.desktopInteractionLayer}
+      >
+        <DesktopIcons items={portfolioData} onOpen={openWindow} />
 
-      <DesktopWindows
-        windows={openWindows}
-        states={windowStates}
-        activeWindowId={activeWindowId}
-        onFocus={focusWindow}
-        onClose={closeWindow}
-        onMinimize={toggleMinimize}
-        onChangeState={updateWindowState}
-      />
-
-      {isStartMenuOpen && (
-        <Pressable
-          accessibilityLabel="Close Start Menu"
-          accessibilityRole="button"
-          onPress={() => setIsStartMenuOpen(false)}
-          style={styles.startMenuDismissLayer}
+        <DesktopWindows
+          windows={openWindows}
+          states={windowStates}
+          activeWindowId={activeWindowId}
+          onFocus={focusWindow}
+          onClose={closeWindow}
+          onMinimize={toggleMinimize}
+          onOpenImage={openGalleryImage}
+          onChangeState={updateWindowState}
         />
-      )}
+      </View>
 
       {isStartMenuOpen && (
         <StartMenu

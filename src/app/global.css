@@ -7,3 +7,11 @@
   border-radius: 0 !important;
 }
 
+input,
+textarea {
+  user-select: text !important;
+}
+
+button[aria-label="Close Start Menu"] {
+  cursor: default !important;
+}

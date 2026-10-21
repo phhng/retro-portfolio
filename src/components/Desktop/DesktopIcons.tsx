@@ -1,12 +1,11 @@
+import { useTheme } from "@/context/ThemeContext";
 import {
-  Image,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { styles } from "./DesktopIcons.styles"
 import { DesktopItem } from "../../hooks/useWindowManager";
-import { useTheme } from "@/context/ThemeContext";
+import { styles } from "./DesktopIcons.styles";
 
 interface DesktopIconsProps {
   items: DesktopItem[];

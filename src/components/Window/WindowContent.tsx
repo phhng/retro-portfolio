@@ -2,15 +2,22 @@
 
 import { useTheme } from "@/context/ThemeContext";
 import { Text, View } from "react-native";
-import { DesktopItem } from "../../hooks/useWindowManager";
-import { styles } from "../Desktop/DesktopIcons.styles";
-import AccountWindow from "../Account/AccountWindow";
 import { games } from "../../data/games";
+import type { GalleryImage } from "../../data/portfolio";
+import { DesktopItem } from "../../hooks/useWindowManager";
+import AccountWindow from "../Account/AccountWindow";
+import { styles } from "../Desktop/DesktopIcons.styles";
+import GalleryWindow from "../Gallery/GalleryWindow";
+import ImageViewerWindow from "../Gallery/ImageViewerWindow";
 
 interface WindowContentProps {
   item: DesktopItem;
+  onOpenImage: (image: GalleryImage) => void;
 }
-export default function WindowContent({ item }: WindowContentProps) {
+export default function WindowContent({
+  item,
+  onOpenImage,
+}: WindowContentProps) {
   const { theme } = useTheme();
 
   if (item.type === "game") {
@@ -23,6 +30,20 @@ export default function WindowContent({ item }: WindowContentProps) {
 
   if (item.type === "account") {
     return <AccountWindow />;
+  }
+
+  if (item.id === "gallery" || item.type.toLowerCase() === "gallery") {
+    return <GalleryWindow onOpenImage={onOpenImage} />;
+  }
+
+  if (item.type === "image-viewer") {
+    return item.imageUri ? (
+      <ImageViewerWindow imageUri={item.imageUri} />
+    ) : (
+      <Text style={[styles.textRegular, { color: theme.textMuted }]}>
+        This image could not be loaded.
+      </Text>
+    );
   }
 
   return (

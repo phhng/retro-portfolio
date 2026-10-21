@@ -1,3 +1,4 @@
+import type { GalleryImage } from "../../data/portfolio";
 import {
   DesktopItem,
   WindowState,
@@ -15,6 +16,7 @@ interface DesktopWindowsProps {
   onFocus: (id: string) => void;
   onClose: (id: string) => void;
   onMinimize: (id: string) => void;
+  onOpenImage: (image: GalleryImage) => void;
 
   onChangeState: (id: string, updates: WindowStateUpdate) => void;
 }
@@ -26,6 +28,7 @@ export default function DesktopWindows({
   onFocus,
   onClose,
   onMinimize,
+  onOpenImage,
   onChangeState,
 }: DesktopWindowsProps) {
   return (
@@ -40,6 +43,14 @@ export default function DesktopWindows({
           <Window
             key={item.id}
             title={item.title}
+            toolbarEnabled={
+              item.enable ?? /\.(txt|md)$/i.test(item.title.trim())
+            }
+            allowTextSelection={
+              /\.(txt|md|html)$/i.test(item.title.trim()) ||
+              item.type === "text-editor" ||
+              item.id === "text-editor"
+            }
             x={state.x}
             y={state.y}
             width={state.width}
@@ -53,7 +64,7 @@ export default function DesktopWindows({
             onMinimize={() => onMinimize(item.id)}
             onChangeState={(updates) => onChangeState(item.id, updates)}
           >
-            <WindowContent item={item} />
+            <WindowContent item={item} onOpenImage={onOpenImage} />
           </Window>
         );
       })}

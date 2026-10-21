@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { styles } from "./Window.styles";
 
@@ -18,32 +18,20 @@ export default function WindowToolbar({
         { borderBottomColor: borderColor },
       ]}
     >
-      <Text
-        style={[
-          styles.toolbarText,
-          { color: textColor },
-        ]}
-      >
-        File
-      </Text>
-
-      <Text
-        style={[
-          styles.toolbarText,
-          { color: textColor },
-        ]}
-      >
-        Edit
-      </Text>
-
-      <Text
-        style={[
-          styles.toolbarText,
-          { color: textColor },
-        ]}
-      >
-        View
-      </Text>
+      {["File", "Edit", "View"].map((label) => (
+        <Pressable
+          key={label}
+          accessibilityRole="button"
+          accessibilityLabel={`${label} toolbar menu`}
+          onPress={() => {}}
+          style={({ pressed }) => [
+            styles.toolbarButton,
+            pressed && styles.toolbarButtonPressed,
+          ]}
+        >
+          <Text style={[styles.toolbarText, { color: textColor }]}>{label}</Text>
+        </Pressable>
+      ))}
     </View>
   );
 }

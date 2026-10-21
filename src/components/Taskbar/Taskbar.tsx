@@ -48,6 +48,7 @@ export default function Taskbar({
     >
       {/* Start Button */}
       <TouchableOpacity
+        testID="start-button"
         onPress={onStartPress}
         style={[
           styles.startButton,

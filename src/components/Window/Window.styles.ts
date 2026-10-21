@@ -71,7 +71,15 @@ export const styles = StyleSheet.create({
 
   toolbarText: {
     fontSize: 11,
-    marginRight: 10,
+  },
+
+  toolbarButton: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+
+  toolbarButtonPressed: {
+    backgroundColor: "#d0d0d0",
   },
 
   body: {
@@ -83,7 +91,7 @@ export const styles = StyleSheet.create({
 
     // Web only
     // @ts-ignore
-    userSelect: "text",
+    userSelect: "none",
   },
 
   edgeHandle: {
